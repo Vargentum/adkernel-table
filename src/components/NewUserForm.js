@@ -5,20 +5,18 @@ import { reduxForm, Field } from 'redux-form'
 import * as fh from 'etc/formHelpers'
 import {Button} from 'react-bootstrap'
 
-const fields = ['firstName', 'lastName', 'phone', 'gender', 'age']
-const fieldsLabels = ['First Name', 'Last Name', 'Phone', 'Gender', 'Age']
+export const fields = ['firstName', 'lastName', 'phone', 'gender', 'age']
+export const fieldsLabels = ['First Name', 'Last Name', 'Phone', 'Gender', 'Age']
 const valid = {
-  string: (x) => !_.isEmpty(x),
-  age: (x) => x <= 0 || x >= 125
+  name: (x) => !_.isEmpty(x),
+  age: (x) => x >= 0 || x <= 125
 }
 
 const validate = (fieldData) => {
   const errors = {}
+  if (!valid.name(fieldData.firstName)) errors.firstName = `Invalid field`
+  if (!valid.name(fieldData.lastName)) errors.lastName = `Invalid field`
   if (!valid.age(fieldData.age)) errors.age = `Invalid age`
-  fields.forEach(field => {
-    if (!valid.string(fieldData[field])) 
-      errors[field] = "This field is required"
-  })
   return errors
 }
 
@@ -35,13 +33,17 @@ let NewUserForm = Component({
     })
   },
   render() {
-    const { fields, handleSubmit } = this.props
+    const { fields, handleSubmit, valid, submitting } = this.props
     return (
       <form onSubmit={handleSubmit}>
         {fields.map((field, idx) =>
           <Field key={field} name={field} component={this.fieldComponents[idx]} />
         )}
-        <Button type="submit" bsStyle="primary">Add new user</Button>
+        <Button 
+          type="submit" 
+          bsStyle="primary" 
+          disabled={!valid || submitting}
+          active={submitting}>Add new user</Button>
       </form>
     )
   }

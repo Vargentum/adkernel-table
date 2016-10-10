@@ -1,6 +1,5 @@
 import { State } from 'jumpsuit'
 import _ from 'lodash'
-import axios from 'axios'
 
 const usersState = State('users', {
   initial: {
@@ -14,10 +13,16 @@ const usersState = State('users', {
       loading: true
     }
   },
+  updateUsers(state, payload) {
+    return {
+      ...state,
+      data: payload
+    }
+  },
   addUser(state, payload) {
     return {
       ...state,
-      data: data.concat([payload])
+      data: state.data.concat([payload])
     }
   },
   receiveUsers(state, payload) {
@@ -39,11 +44,19 @@ function isValidUsers(users) {
   return Array.isArray(users)
 }
 
-export function loadOrInitUsersData () {
-  const storage = window.localStorage
-  let users = storage.getItem('users')
+/* -----------------------------
+  Actions
+----------------------------- */
+const storage = window.localStorage
+
+export function loadUsers () {
+  let users = JSON.parse(storage.getItem('users'))
   if (!isValidUsers(users))
     users = initUsers()
   usersState.receiveUsers(users)
 }
 
+export function updateUsers(data) {
+  usersState.updateUsers(data)
+  storage.setItem('users', JSON.stringify(data))
+}

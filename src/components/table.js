@@ -2,39 +2,50 @@
 import { Component } from 'jumpsuit'
 import _ from 'lodash'
 import {mapRender} from 'etc/utils'
+import {Table, Column, Cell} from 'fixed-data-table';
+import {fields, fieldsLabels} from 'components/NewUserForm'
+import cls from 'classnames'
 
+/* -----------------------------
+  cell factory
+----------------------------- */
+function cellory (data, type) {
+  return function _Cell ({rowIndex, ...props}) {
+    const value = data[rowIndex][type]
+    return <Cell {...props}> {value} </Cell>
+  }
+}
+
+
+const TABLE_WIDTH = 960
 
 export default Component({
 
-  r_rowOf(Component) {
-    return (cells) => {
-      return <TableRow key={_.uniqueId('row-')}>
-        {cells.map(u.mapRender(TableCell))}
-      </TableRow>
-    }
+  r_cell (type) {
+    return cellory(this.props.data, type)
+  },
+  r_controlCell (type) {
+    return <Cell>{type}</Cell>
+  },
+  getColWidth() {
+    return TABLE_WIDTH / fields.length
   },
   render() {
-    const {data, head} = this.props
-    return <table>
-      <thead>
-        {head.map(this.r_rowOf(TableHeadCell))}
-      </thead>
-      <tbody>
-        {data.map(this.r_rowOf(TableCell))}
-      </tbody>
-    </table>
+    const {data} = this.props
+    return <Table
+      rowHeight={50}
+      rowsCount={data.length}
+      width={TABLE_WIDTH}
+      height={500}
+      headerHeight={50}
+    >
+      {fields.map((field, idx) => 
+        <Column
+          key={field}
+          width={this.getColWidth()}
+          header={this.r_controlCell(fieldsLabels[idx])}
+          cell={this.r_cell(field)}/>
+        )}
+    </Table>    
   }
 })
-
-
-
-function TableRow ({...props}) {
-  return <tr {...props}></tr>
-}
-
-function TableCell ({...props}) {
-  return <td {...props}></td>
-}
-function TableHeadCell ({...props}) {
-  return <th {...props}></th>
-}
