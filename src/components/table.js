@@ -17,31 +17,66 @@ function cellory (data, type) {
   }
 }
 
-export default Component({
+const DATA_ORDERS = {
+  ascending: false,
+  descending: true
+}
 
-  r_cell (type) {
-    return cellory(this.props.data, type)
+export default Component({
+  componentWillMount () {
+    this.state = {
+      mirroredData: this.props.data,
+      sortedBy: null
+    }
   },
-  r_controlCell (type) {
-    return <Cell>{type}</Cell>
+  r_cell (type) {
+    return cellory(this.state.mirroredData, type)
+  },
+  r_controlCell (type, label) {
+    const {sortedKey, sortedOrder} = this.state
+    const newOrder = sortedKey === type && sortedOrder === DATA_ORDERS.ascending // asc: false, desc: true
+    return <Cell 
+      onClick={_.partial(this.sortDataBy, type, newOrder)}
+      className={cls('Table__cell', {
+        'is-asc': sortedKey === type && sortedOrder === DATA_ORDERS.ascending,
+        'is-desc': sortedKey === type && sortedOrder === DATA_ORDERS.descending
+      })}
+    >
+      {label}
+    </Cell>
+  },
+  sortDataBy(sortedKey, sortedOrder) {
+    const {mirroredData} = this.state
+    this.setState({
+      mirroredData: sortedOrder === DATA_ORDERS.descending 
+        ? mirroredData.reverse()
+        : _.sortBy(mirroredData, item => 
+            sortedKey === 'age' || sortedKey === 'phone'
+              ? Number(item[sortedKey])
+              : item[sortedKey]
+          )
+      ,
+      sortedKey,
+      sortedOrder
+    });
   },
   render() {
-    const {data} = this.props
+    const {mirroredData} = this.state
     return <div style={{height: 500}}>
       <Table
         rowHeight={50}
-        rowsCount={data.length}
+        rowsCount={mirroredData.length}
         headerHeight={50}
       >
-        {fields.map((field, idx) => 
+        {fields.map((field, idx) =>
           <Column
             key={field}
             width={0}
             flexGrow={1}
-            header={this.r_controlCell(fieldsLabels[idx])}
+            header={this.r_controlCell(field, fieldsLabels[idx])}
             cell={this.r_cell(field)}/>
           )}
-      </Table>    
+      </Table>
     </div>
   }
 })

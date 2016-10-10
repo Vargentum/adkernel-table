@@ -45,7 +45,8 @@ const UsersTable = Component({
         {successfullCreation && this.r_successAlert()}
         {loading && <st.LoadingArea />}
         {loaded && !_.isEmpty(data) 
-          ? <Table data={data} />
+          ? <Table 
+              data={data} />
           : <st.EmptyArea>There are no users. Would you like to add a one?</st.EmptyArea>
         }
       </Col>

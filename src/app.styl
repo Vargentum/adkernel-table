@@ -45,11 +45,58 @@ clearfix()
   &:after
     clear: both
     
+ctr(pos = xy, transforms...)
+  position absolute
+
+  if pos == xy
+    top: 50%
+    left 50%
+    transform translate(-50%, -50%) transforms
+
+  else if pos == y
+    top: 50%
+    transform translateY(-50%) transforms
+
+  else if pos == x
+    left: 50%
+    transform translateX(-50%) transforms
+
+  else if pos == none
+    position static
+    transform none
+
+
+p-ctr(pos = xy, transforms...)
+  content ''
+  display block
+  ctr(pos, transforms)
+
 
 
 /* -----------------------------
   App Styles
 ----------------------------- */
+.Table
+  &__cell
+    position relative
+    display flex
+    align-items: center
+    &.is-asc
+    &.is-desc
+      &:after
+        p-ctr y
+        right 10px
+        margin-left: 5px
+        border-left 5px solid transparent
+        border-right @border-left
+    &.is-asc
+      &:after
+        border-bottom 5px solid #333
+    &.is-desc
+      &:after
+        border-top 5px solid #333
+
+
 .NewUserForm
   margin-bottom 50px
   &__submit
