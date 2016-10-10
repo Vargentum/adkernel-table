@@ -20,7 +20,7 @@ $clr-jumpsuit2 = #33478C
 $clr-jumpsuit3 = #3A54AD
 
 // -----------------------------------------------------------------------------
-// styles
+// General
 // -----------------------------------------------------------------------------
 
 *
@@ -31,3 +31,35 @@ html
 
 body
   font-family $fnt-open-sans
+
+
+
+/* -----------------------------
+  mixins
+----------------------------- */
+clearfix()
+  &:before
+  &:after
+    content: ""
+    display: table
+  &:after
+    clear: both
+    
+
+
+/* -----------------------------
+  App Styles
+----------------------------- */
+.NewUserForm
+  margin-bottom 50px
+  &__submit
+    display: block
+    margin: auto
+    
+
+.UsersTable
+  &__successAlert
+    margin: 20px 0
+    
+.form-group
+  clearfix()

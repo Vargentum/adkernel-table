@@ -2,7 +2,8 @@
 import { Component } from 'jumpsuit'
 import _ from 'lodash'
 import {mapRender} from 'etc/utils'
-import {Table, Column, Cell} from 'fixed-data-table';
+import {Column, Cell} from 'fixed-data-table';
+import Table from 'responsive-fixed-data-table';
 import {fields, fieldsLabels} from 'components/NewUserForm'
 import cls from 'classnames'
 
@@ -16,9 +17,6 @@ function cellory (data, type) {
   }
 }
 
-
-const TABLE_WIDTH = 960
-
 export default Component({
 
   r_cell (type) {
@@ -27,25 +25,23 @@ export default Component({
   r_controlCell (type) {
     return <Cell>{type}</Cell>
   },
-  getColWidth() {
-    return TABLE_WIDTH / fields.length
-  },
   render() {
     const {data} = this.props
-    return <Table
-      rowHeight={50}
-      rowsCount={data.length}
-      width={TABLE_WIDTH}
-      height={500}
-      headerHeight={50}
-    >
-      {fields.map((field, idx) => 
-        <Column
-          key={field}
-          width={this.getColWidth()}
-          header={this.r_controlCell(fieldsLabels[idx])}
-          cell={this.r_cell(field)}/>
-        )}
-    </Table>    
+    return <div style={{height: 500}}>
+      <Table
+        rowHeight={50}
+        rowsCount={data.length}
+        headerHeight={50}
+      >
+        {fields.map((field, idx) => 
+          <Column
+            key={field}
+            width={0}
+            flexGrow={1}
+            header={this.r_controlCell(fieldsLabels[idx])}
+            cell={this.r_cell(field)}/>
+          )}
+      </Table>    
+    </div>
   }
 })

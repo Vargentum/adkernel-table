@@ -35,13 +35,15 @@ let NewUserForm = Component({
   render() {
     const { fields, handleSubmit, valid, submitting } = this.props
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="NewUserForm">
         {fields.map((field, idx) =>
           <Field key={field} name={field} component={this.fieldComponents[idx]} />
         )}
-        <Button 
-          type="submit" 
-          bsStyle="primary" 
+        <Button
+          type="submit"
+          bsStyle="primary"
+          bsSize="lg"
+          className="NewUserForm__submit"
           disabled={!valid || submitting}
           active={submitting}>Add new user</Button>
       </form>

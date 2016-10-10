@@ -1,11 +1,12 @@
 import { Component } from 'jumpsuit'
+import {Grid} from 'react-bootstrap'
 
 export default Component({
   render () {
     return (
-      <div className='container'>
+      <Grid>
         {this.props.children}
-      </div>
+      </Grid>
     )
   }
 })
