@@ -19,6 +19,8 @@
   "dependencies": {
     "axios": "^0.13.1",
     "jumpsuit": "^0.8.0",
-    "lodash": "^4.14.1"
+    "lodash": "^4.14.1",
+    "react-bootstrap": "0.30.5",
+    "redux-form": "6.1.0"
   }
 }

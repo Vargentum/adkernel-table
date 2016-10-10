@@ -3,14 +3,16 @@ import _ from 'lodash'
 import Table from 'components/table'
 import NewUserForm from 'components/NewUserForm'
 import {loadOrInitUsersData} from 'state/users'
+import usersState from 'state/users'
 
 
 export default Component({
-  componentDidMount () {
+  componentWillMount () {
     loadOrInitUsersData()
   },
-  handleSubmit() {
-    e.preventDefault()
+  handleSubmit(data) {
+    console.log(data, 'data---------')
+    usersState.addUser(data)
   },
   composeTableHead() {
     const {users: {loaded, loading, data}} = this.props
@@ -22,7 +24,7 @@ export default Component({
   render() {
     const {users: {loaded, loading, data}} = this.props
     return <div>
-      {/*<NewUserForm onSubmit={this.handleSubmit} />*/}
+      <NewUserForm onSubmit={this.handleSubmit} />
       {loading && <span>Loading...</span>}
       {loaded && <Table data={data} head={this.composeTableHead()}/>}
     </div>

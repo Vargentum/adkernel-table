@@ -14,6 +14,12 @@ const usersState = State('users', {
       loading: true
     }
   },
+  addUser(state, payload) {
+    return {
+      ...state,
+      data: data.concat([payload])
+    }
+  },
   receiveUsers(state, payload) {
     return {
       ...state,
