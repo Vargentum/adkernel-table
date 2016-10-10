@@ -1,6 +1,6 @@
 'use strict'
 import React, { Component, PropTypes as PT } from 'react'
-import {Col, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap'
+import {Col, FormGroup, FormControl, ControlLabel, HelpBlock, Radio} from 'react-bootstrap'
 import _ from 'lodash'
 
 export function fillExisntenceErrors (data, errorMsg = 'Required') {
@@ -39,10 +39,21 @@ export function CompleteField ({colConfig={label: 3, main: 9}, label, id, error,
 /* -----------------------------
   factory for redux form <Filed component={} /> fulfilling
 ----------------------------- */
-export function createFieldComponent ({Cmp = FormControl, fieldProps, ...props}) {
-  return function ({input: {value, onChange}, meta: {error}}) {
+export function createFieldComponent ({Cmp = FormControl, fieldProps}) {
+  return function ({input: {value, onChange}, meta: {error}, radioOptions}) {
     return <CompleteField error={error} {...fieldProps}>
-      <Cmp {...props} value={value} onChange={onChange} /> 
+      {radioOptions && radioOptions.length 
+        ? radioOptions.map(o => 
+            <label key={o.value} className="FieldComponent__radioWrap">
+              <Radio 
+                checked={o.value === value} 
+                value={o.value} 
+                onChange={onChange} />
+              <span className="FieldComponent__radioWrapLabel">{o.label}</span>
+            </label>
+          ) 
+        : <Cmp value={value} onChange={onChange} /> 
+      }
     </CompleteField>
   }
 }

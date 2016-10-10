@@ -9,14 +9,19 @@ export const fields = ['firstName', 'lastName', 'phone', 'gender', 'age']
 export const fieldsLabels = ['First Name', 'Last Name', 'Phone', 'Gender', 'Age']
 const valid = {
   name: (x) => !_.isEmpty(x),
+  number: (x) => _.isNumber(Number(x)) && !_.isNaN(Number(x)),
   age: (x) => x >= 0 || x <= 125
 }
 
+const GENDERS = ['female', 'male']
+
 const validate = (fieldData) => {
   const errors = {}
-  if (!valid.name(fieldData.firstName)) errors.firstName = `Invalid field`
-  if (!valid.name(fieldData.lastName)) errors.lastName = `Invalid field`
+  if (!valid.name(fieldData.firstName)) errors.firstName = `Should be filled`
+  if (!valid.name(fieldData.gender)) errors.gender = `Should be filled`
+  if (!valid.number(fieldData.phone)) errors.phone = `Should be a number`
   if (!valid.age(fieldData.age)) errors.age = `Invalid age`
+  if (!valid.number(fieldData.age)) errors.age = `Should be a number`
   return errors
 }
 
@@ -37,7 +42,8 @@ let NewUserForm = Component({
     return (
       <form onSubmit={handleSubmit} className="NewUserForm">
         {fields.map((field, idx) =>
-          <Field key={field} name={field} component={this.fieldComponents[idx]} />
+          <Field key={field} name={field} component={this.fieldComponents[idx]}
+            radioOptions={field === 'gender' ? GENDERS.map(g => ({label: g, value: g})) : null} />
         )}
         <Button
           type="submit"
