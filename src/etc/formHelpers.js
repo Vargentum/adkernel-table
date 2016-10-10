@@ -5,8 +5,8 @@ import _ from 'lodash'
 
 export function fillExisntenceErrors (data, errorMsg = 'Required') {
   return _.transform(
-    data, 
-    (errors, field) => field ? errors : {...errors, [field]: errorMsg}, 
+    data,
+    (errors, field) => field ? errors : {...errors, [field]: errorMsg},
     {}
   )
 }
@@ -42,17 +42,17 @@ export function CompleteField ({colConfig={label: 3, main: 9}, label, id, error,
 export function createFieldComponent ({Cmp = FormControl, fieldProps}) {
   return function ({input: {value, onChange}, meta: {error}, radioOptions}) {
     return <CompleteField error={error} {...fieldProps}>
-      {radioOptions && radioOptions.length 
-        ? radioOptions.map(o => 
+      {radioOptions && radioOptions.length
+        ? radioOptions.map(o =>
             <label key={o.value} className="FieldComponent__radioWrap">
-              <Radio 
-                checked={o.value === value} 
-                value={o.value} 
+              <Radio
+                checked={o.value === value}
+                value={o.value}
                 onChange={onChange} />
               <span className="FieldComponent__radioWrapLabel">{o.label}</span>
             </label>
-          ) 
-        : <Cmp value={value} onChange={onChange} /> 
+          )
+        : <Cmp value={value} onChange={onChange} />
       }
     </CompleteField>
   }

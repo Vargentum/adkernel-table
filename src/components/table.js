@@ -29,6 +29,14 @@ export default Component({
       sortedBy: null
     }
   },
+  componentWillReceiveProps(nextProps) {
+    this.syncStateWithProps(nextProps)
+  },
+  syncStateWithProps(props) {
+    this.setState({
+      mirroredData: props.data 
+    });
+  },
   r_cell (type) {
     return cellory(this.state.mirroredData, type)
   },

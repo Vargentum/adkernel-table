@@ -18,9 +18,14 @@ const UsersTable = Component({
   handleSubmit(fieldData, ac, form) {
     const {users: {data}} = this.props
     const newData = data.concat([fieldData])
-    updateUsers(newData)
-    form.reset()
-    this.showSuccessAlert()
+    Promise.resolve(updateUsers(newData))
+      .then(() => loadUsers())
+      .catch(e => {throw e})
+      .then(() => {
+        form.reset()
+        this.showSuccessAlert()
+      })
+      .catch(e => {throw e})
   },
   r_successAlert() {
     return <Alert bsStyle="success" className="UsersTable__successAlert"> Added to table! </Alert>
